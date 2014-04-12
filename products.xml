@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+   <product>
+      <name>Cappuccino</name>
+      <price>2.99</price>
+      <taxable>true</taxable>
+   </product>
+   <product>
+      <name>Espresso</name>
+      <price>2.59</price>
+      <taxable>true</taxable>
+   </product>
+   <product>
+      <name>Iced Coffee</name>
+      <price>2.29</price>
+      <taxable>true</taxable>
+   </product>
+   <product>
+      <name>House Coffee</name>
+      <price>1.99</price>
+      <taxable>true</taxable>
+   </product>
+   <product>
+      <name>Bagel</name>
+      <price>1.99</price>
+      <taxable>true</taxable>
+   </product>
+   <product>
+      <name>Muffin</name>
+      <price>1.59</price>
+      <taxable>true</taxable>
+   </product>
+   <product>
+      <name>Banana</name>
+      <price>0.99</price>
+      <taxable>false</taxable>
+   </product>
+   <product>
+      <name>Orange</name>
+      <price>0.79</price>
+      <taxable>false</taxable>
+   </product>
+</products>
