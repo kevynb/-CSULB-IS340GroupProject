@@ -151,7 +151,7 @@
             this.Controls.Add(this.ProductsGrid);
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "RTK Order";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProductsGrid)).EndInit();

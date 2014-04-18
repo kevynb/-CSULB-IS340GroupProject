@@ -19,9 +19,12 @@ namespace GroupProject
         public Form1()
         {
             InitializeComponent();
+            var qColumn = this.ProductsGrid.Columns.Add("Quantity", "Quantity ordered");
+            this.ProductsGrid.Columns[qColumn].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             this.ProductsGrid.Hide();
             this.ProductsGrid.AutoSize = true;
-            this.ProductsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+            this.ProductsGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            this.ProductsGrid.EditMode = DataGridViewEditMode.EditProgrammatically;
             ProductsGrid.Dock = DockStyle.Fill;
             ProductsGrid.BackgroundColor = this.BackColor;
             ProductsGrid.BorderStyle = BorderStyle.None;
@@ -58,7 +61,18 @@ namespace GroupProject
 
         private void ProductGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            var k = this._productsList[e.RowIndex];
+            if (!(e.RowIndex > 0 && e.ColumnIndex > 0))
+                return;
+            var product = this._productsList[e.RowIndex];
+            var popup = new AddPopup();
+            if (this.ProductsGrid.Rows[e.RowIndex].Cells[2].Value != null)
+                popup.ProductQuantity = (int) this.ProductsGrid.Rows[e.RowIndex].Cells[2].Value;
+            popup.SetProductName(product.Name);
+            if (popup.ShowDialog(this) == DialogResult.OK)
+            {
+                ProductsGrid.Rows[e.RowIndex].Cells["Quantity"].Value = popup.ProductQuantity;
+            }
+            popup.Dispose();
         }
     }
 }
