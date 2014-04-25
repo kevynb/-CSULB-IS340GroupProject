@@ -15,6 +15,7 @@ namespace GroupProject
     {
         private XmlReader ordersStreamReader;
         private List<Product> _productsList;
+        private Cart _cart;
 
         public Form1()
         {
@@ -28,8 +29,16 @@ namespace GroupProject
             ProductsGrid.Dock = DockStyle.Fill;
             ProductsGrid.BackgroundColor = this.BackColor;
             ProductsGrid.BorderStyle = BorderStyle.None;
+            _cart = new Cart();
+            this.purchasebtn.Visible = false;
+        }
 
-//            this.ProductsGrid.DataBindingComplete += (sender, args) => this.ProductsGrid.Show();
+        private void InitProductGridQuantity()
+        {
+            for (int i = 0; i != this.ProductsGrid.RowCount; i++)
+            {
+                ProductsGrid.Rows[i].Cells["Quantity"].Value = 0;
+            }
         }
 
         private void loadProductsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -45,6 +54,7 @@ namespace GroupProject
                 ProductsGrid.Columns[1].DefaultCellStyle.Format = "c";
                 this.labelInstructions.Hide();
                 this.ProductsGrid.Show();
+                InitProductGridQuantity();
             }
         }
 
@@ -61,7 +71,8 @@ namespace GroupProject
 
         private void ProductGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (!(e.RowIndex > 0 && e.ColumnIndex > 0))
+            ProductsGrid.Rows[e.RowIndex].Cells["Quantity"].Value = 0;
+            if (!(e.RowIndex >= 0 && e.ColumnIndex > 0))
                 return;
             var product = this._productsList[e.RowIndex];
             var popup = new AddPopup();
@@ -71,6 +82,20 @@ namespace GroupProject
             if (popup.ShowDialog(this) == DialogResult.OK)
             {
                 ProductsGrid.Rows[e.RowIndex].Cells["Quantity"].Value = popup.ProductQuantity;
+                _cart.update(product, popup.ProductQuantity);
+                this.purchasebtn.Visible = true;
+            }
+            popup.Dispose();
+            //_cart.displayCart();
+        }
+
+        private void purchasebtn_Click(object sender, EventArgs e)
+        {
+            var popup = new OrderForm(_cart.getTotal());
+            if (popup.ShowDialog(this) == DialogResult.OK)
+            {
+                Console.WriteLine("{0} {1}", popup.AccountNumber, _cart.getTotal());
+                // save in xml
             }
             popup.Dispose();
         }
