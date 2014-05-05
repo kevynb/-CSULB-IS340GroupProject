@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace GroupProject
 {
     public class Cart
     {
-        private Dictionary<Product, int> _content { get; set; }
+        public Dictionary<Product, int> _content {get; private set;}
+
 
         public Cart()
         {

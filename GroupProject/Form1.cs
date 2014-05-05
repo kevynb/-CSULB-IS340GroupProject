@@ -95,7 +95,30 @@ namespace GroupProject
             if (popup.ShowDialog(this) == DialogResult.OK)
             {
                 Console.WriteLine("{0} {1}", popup.AccountNumber, _cart.getTotal());
-                // save in xml
+
+                XmlDocument doc = new XmlDocument();
+
+                XmlElement el = (XmlElement)doc.AppendChild(doc.CreateElement("Order"));
+                el.AppendChild(doc.CreateElement("Date")).InnerText = DateTime.Now.ToString();
+                el.AppendChild(doc.CreateElement("AccountNumber")).InnerText = popup.AccountNumber;
+                el.AppendChild(doc.CreateElement("Total")).InnerText = _cart.getTotal().ToString();
+
+                XmlElement listItems = (XmlElement)el.AppendChild(doc.CreateElement("Items"));
+
+
+                foreach (KeyValuePair<Product, int> tmp in _cart._content)
+                {
+                    for (int i = 0; i < tmp.Value; ++i)
+                    {
+                        XmlElement productList = (XmlElement)listItems.AppendChild(doc.CreateElement("Product"));
+                        productList.AppendChild(doc.CreateElement("Name")).InnerText = tmp.Key.Name;
+                        productList.AppendChild(doc.CreateElement("Price")).InnerText = tmp.Key.Price.ToString();
+                        productList.AppendChild(doc.CreateElement("Taxable")).InnerText = tmp.Key.Taxable.ToString();                 
+                    }
+                }
+                FileStream fs = new FileStream(@"order.xml", FileMode.Append);
+                doc.Save(fs);
+                fs.Close();
             }
             popup.Dispose();
         }
